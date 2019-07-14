@@ -23,7 +23,8 @@ public class CustomLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler im
         final String refererUrl = request.getHeader("Referer");
         System.out.println(refererUrl);
 
-        super.onLogoutSuccess(request, response, authentication);
+        //super.onLogoutSuccess(request, response, authentication);
+        response.sendRedirect(request.getContextPath() +"/login");
     }
 
 }

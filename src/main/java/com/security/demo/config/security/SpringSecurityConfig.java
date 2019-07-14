@@ -33,23 +33,46 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http);
         http
+         //csrf disable
                 .csrf().disable()
+
+                //start with auth request
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                // allow pages without logins
                 .antMatchers("/anonymous*").anonymous()
+                // allow url to let users login
                 .antMatchers("/login*").permitAll()
+
+
+         //other need login
                 .anyRequest().authenticated()
+
+            // >> set custom login form
+                    .and()
+                    .formLogin()
+                    .loginPage("/login.jsp")
+                    // need to be form action for login form , spring security listen to it
+                    .loginProcessingUrl("/perform_login")
+                    // landing page for logged-in user
+                    .defaultSuccessUrl("/home", true)
+                    // if invalid login performed
+                    .failureHandler(authenticationFailureHandler())
+
+            // customize error page handler for unauthorized request
                 .and()
-                .formLogin()
-                .loginPage("/login.jsp")
-                .loginProcessingUrl("/perform_login")
-                .defaultSuccessUrl("/home", true)
-                //.failureUrl("/login.html?error=true")
-                .failureHandler(authenticationFailureHandler())
+                    //custom access denied page handler
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+
+            // logout processing
                 .and()
                 .logout()
+                    //logout processing url
                 .logoutUrl("/perform_logout")
+                    //steps need to perform
+                .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
+                    // custom handler to do extra task like auditing or other
                 .logoutSuccessHandler(logoutSuccessHandler());
 
 

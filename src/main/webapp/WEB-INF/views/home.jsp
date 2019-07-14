@@ -7,5 +7,8 @@
 </head>
 <body>
 hello world
+
+<div><a href="<c:url value="/perform_logout" />">Logout</a>
+</div>
 </body>
 </html>

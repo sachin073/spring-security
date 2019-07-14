@@ -9,13 +9,13 @@ public class HomeController {
 
     @GetMapping("/login")
     public String login(){
-        System.out.printf("login intercepted");
+        System.out.println("login intercepted");
         return "login";
     }
 
     @GetMapping("/accessDenied")
     public String accessDenied(){
-        System.out.printf("accessDenied intercepted");
+        System.out.println("accessDenied intercepted");
         return "accessDenied";
     }
 
