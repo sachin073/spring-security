@@ -1,0 +1,25 @@
+/* Your custom styles */
+
+.code-gray{
+    background: #efefef
+}
+
+body{
+   font: 400 18px/1.7 "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.custom-container{
+    max-width:100%;
+}
+
+.list-container{
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.scale-summary-img{
+    transform: scale(2);
+}
+
+.summary-time-badge{
+    font-size: 15px;
+}

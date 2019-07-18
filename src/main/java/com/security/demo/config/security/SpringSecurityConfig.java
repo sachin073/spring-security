@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.provisioning.InMemoryUserDetailsManagerConfigurer;
-import org.springframework.security.config.annotation.authentication.configurers.provisioning.UserDetailsManagerConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,12 +26,15 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //super.configure(http);
         http
          //csrf disable
                 .csrf().disable()
+                .headers().frameOptions().disable().and()
 
                 //start with auth request
                 .authorizeRequests()
@@ -42,7 +42,8 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 // allow pages without logins
                 .antMatchers("/anonymous*").anonymous()
                 // allow url to let users login
-                .antMatchers("/login*").permitAll()
+                .antMatchers("/login**","/*.css/**","/font/**","/h2*/**").permitAll()
+               //.antMatchers("/login*","/h2_console/**","/*.css/**","/font/**").permitAll()
 
 
          //other need login

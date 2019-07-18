@@ -1,14 +1,9 @@
-<!DOCTYPE html>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<html lang="en">
-<head>
-    <title>Spring Boot JSP example</title>
-</head>
-<body>
-hello world
+<jsp:include page="header.jsp"></jsp:include>
 
-<div><a href="<c:url value="/perform_logout" />">Logout</a>
-</div>
-</body>
-</html>
+
+<a href="/user/create" type="button" class="btn btn-default btn-lg btn-block">create user</a>
+<a href="/user/details" type="button" class="btn btn-default btn-lg btn-block">get all users</a>
+<a href="/perform_logout" type="button" class="btn btn-primary btn-lg btn-block">Log out</a>
+
+<jsp:include page="footer.jsp"></jsp:include>
