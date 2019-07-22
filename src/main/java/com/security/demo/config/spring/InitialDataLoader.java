@@ -56,6 +56,7 @@ public class InitialDataLoader implements
         User user = new User();
         user.setFirstName("Test");
         user.setLastName("Test");
+        user.setLoginId("test");
         user.setPassword(passwordEncoder.encode("test"));
         user.setEmail("test@test.com");
         user.setRoles(Arrays.asList(adminRole));

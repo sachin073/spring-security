@@ -1,4 +1,4 @@
-package com.security.demo.config.security;
+package com.security.demo.config.security.handlers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

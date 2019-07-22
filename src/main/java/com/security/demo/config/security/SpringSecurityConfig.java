@@ -1,5 +1,8 @@
 package com.security.demo.config.security;
 
+import com.security.demo.config.security.handlers.CustomAccessDeniedHandler;
+import com.security.demo.config.security.handlers.CustomAuthenticationFailureHandler;
+import com.security.demo.config.security.handlers.CustomLogoutSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,15 +21,14 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @EnableWebSecurity
 public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
 
+
     @Autowired
-    PasswordEncoder encoder;
+    public CustomAuthenticationProvider customAuthenticationProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,8 +44,8 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
                 // allow pages without logins
                 .antMatchers("/anonymous*").anonymous()
                 // allow url to let users login
-                .antMatchers("/login**","/*.css/**","/font/**","/h2*/**").permitAll()
-               //.antMatchers("/login*","/h2_console/**","/*.css/**","/font/**").permitAll()
+               // .antMatchers("/login**","/*.css/**","/font/**","/h2*/**").permitAll()
+               .antMatchers("/login*","/h2_console/**","/*.css/**","/font/**").permitAll()
 
 
          //other need login
@@ -52,11 +54,11 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
             // >> set custom login form
                     .and()
                     .formLogin()
-                    .loginPage("/login.jsp")
+                    .loginPage("/login")
                     // need to be form action for login form , spring security listen to it
                     .loginProcessingUrl("/perform_login")
                     // landing page for logged-in user
-                    .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/home", true)
                     // if invalid login performed
                     .failureHandler(authenticationFailureHandler())
 
@@ -80,12 +82,13 @@ public class SpringSecurityConfig  extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().
+    protected void configure(AuthenticationManagerBuilder auth){
+        /*auth.inMemoryAuthentication().
                 withUser("sachin").password(encoder.encode("password")).roles("user").
                 and().
-                withUser("admin").password(encoder.encode("password")).roles("ADMIN");
+                withUser("admin").password(encoder.encode("password")).roles("ADMIN");*/
 
+        auth.authenticationProvider(customAuthenticationProvider);
     }
     @Bean
     public LogoutSuccessHandler logoutSuccessHandler() {

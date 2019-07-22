@@ -1,5 +1,6 @@
-package com.security.demo.config.security;
+package com.security.demo.config.security.handlers;
 
+import com.security.demo.config.security.SpringSecurityConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.AuthenticationException;

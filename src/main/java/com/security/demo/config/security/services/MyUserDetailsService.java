@@ -1,12 +1,13 @@
-package com.security.demo.services;
+package com.security.demo.config.security.services;
 
+import com.security.demo.config.security.models.UserPrincipal;
 import com.security.demo.persistance.dao.RoleRepository;
 import com.security.demo.persistance.dao.UserRepository;
 import com.security.demo.persistance.models.Privilege;
 import com.security.demo.persistance.models.Role;
 import com.security.demo.persistance.models.User;
+import com.security.demo.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,31 +31,23 @@ public class MyUserDetailsService implements UserDetailsService {
     private IUserService service;
   
     @Autowired
-    private MessageSource messages;
-  
-    @Autowired
     private RoleRepository roleRepository;
  
     @Override
-    public UserDetails loadUserByUsername(String email)
+    public UserDetails loadUserByUsername(String loginId)
       throws UsernameNotFoundException {
   
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByLoginId(loginId);
+
         if (user == null) {
-            return new org.springframework.security.core.userdetails.User(
-              " ", " ", true, true, true, true, 
-              getAuthorities(Arrays.asList(
-                roleRepository.findByName("ROLE_USER"))));
+            throw new UsernameNotFoundException("invalid user");
         }
  
-        return new org.springframework.security.core.userdetails.User(
-          user.getEmail(), user.getPassword(), user.isEnabled(), true, true, 
-          true, getAuthorities(user.getRoles()));
+        return new UserPrincipal(user);
     }
  
     private Collection<? extends GrantedAuthority> getAuthorities(
       Collection<Role> roles) {
-  
         return getGrantedAuthorities(getPrivileges(roles));
     }
  

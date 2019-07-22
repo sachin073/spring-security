@@ -9,15 +9,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
- 
+
+    private String loginId;
+
     private String firstName;
     private String lastName;
     private String email;
     private String password;
     private boolean enabled;
     private boolean tokenExpired;
- 
-    @ManyToMany
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable( 
         name = "users_roles", 
         joinColumns = @JoinColumn(
@@ -33,6 +35,14 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getLoginId() {
+        return loginId;
+    }
+
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
     }
 
     public String getFirstName() {
@@ -90,6 +100,5 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
-
 
 }
